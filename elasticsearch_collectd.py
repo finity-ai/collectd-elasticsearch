@@ -882,13 +882,13 @@ class Cluster(object):
         for pool in self.thread_pools:
             for metric_type, value in THREAD_POOL_METRICS.items():
                 for attr in value:
-                    name = "thread_pool.{0}".format(attr)
+                    name = "thread_pool.{0}.{1}".format(pool,attr)
                     key = Stat(metric_type, "nodes.%s.thread_pool.{0}.{1}".format(pool, attr))
                     if self.detailed_metrics is True or name in self.defaults:
                         node = list(json["nodes"].keys())[0]
                         result = dig_it_up(json, key.path % node)
 
-                        self.dispatch_stat(result, name, key, {"thread_pool": pool})
+                        self.dispatch_stat(result, name, key)
 
     def parse_cluster_stats(self, json, stats):
         """Parse cluster stats response from ElasticSearch"""
